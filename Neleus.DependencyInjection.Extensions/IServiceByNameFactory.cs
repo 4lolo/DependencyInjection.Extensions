@@ -21,6 +21,6 @@
         /// <summary>
         /// Provides instance of registered service by name
         /// </summary>
-        TService GetByName(string name);
+        new TService GetByName(string name);
     }
 }

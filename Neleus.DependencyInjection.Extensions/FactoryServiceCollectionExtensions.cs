@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Neleus.DependencyInjection.Extensions
@@ -7,10 +8,33 @@ namespace Neleus.DependencyInjection.Extensions
     {
         /// <summary>
         /// Entry point for name-based registrations. This method should be called in order to start building
+        /// named registrations for <paramref name="serviceType"/>"/>
+        /// </summary>
+        /// <returns><see cref="ServicesByNameBuilder"/> which is used to build multiple named registrations</returns>
+        public static ServicesByNameBuilder AddByName(this ServiceContainer services, Type serviceType)
+        {
+            return new ServicesByNameBuilder(serviceType, services, new NameBuilderSettings());
+        }
+
+        /// <summary>
+        /// Entry point for name-based registrations. This method should be called in order to start building
+        /// named registrations for <paramref name="serviceType"/>"/>
+        /// </summary>
+        /// <param name="services">Service collection</param>
+        /// <param name="serviceType">Service type</param>
+        /// <param name="settings">Customization settings</param>
+        /// <returns><see cref="ServicesByNameBuilder"/> which is used to build multiple named registrations</returns>
+        public static ServicesByNameBuilder AddByName(this ServiceContainer services, Type serviceType, NameBuilderSettings settings)
+        {
+            return new ServicesByNameBuilder(serviceType, services, settings);
+        }
+
+        /// <summary>
+        /// Entry point for name-based registrations. This method should be called in order to start building
         /// named registrations for <typeparamref name="TService"/>"/>
         /// </summary>
         /// <returns><see cref="ServicesByNameBuilder&lt;TService&gt;"/> which is used to build multiple named registrations</returns>
-        public static ServicesByNameBuilder<TService> AddByName<TService>(this IServiceCollection services)
+        public static ServicesByNameBuilder<TService> AddByName<TService>(this ServiceContainer services)
         {
             return new ServicesByNameBuilder<TService>(services, new NameBuilderSettings());
         }
@@ -22,7 +46,7 @@ namespace Neleus.DependencyInjection.Extensions
         /// <param name="services">Service collection</param>
         /// <param name="settings">Customization settings</param>
         /// <returns><see cref="ServicesByNameBuilder&lt;TService&gt;"/> which is used to build multiple named registrations</returns>
-        public static ServicesByNameBuilder<TService> AddByName<TService>(this IServiceCollection services, NameBuilderSettings settings)
+        public static ServicesByNameBuilder<TService> AddByName<TService>(this ServiceContainer services, NameBuilderSettings settings)
         {
             return new ServicesByNameBuilder<TService>(services, settings);
         }

@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net462</TargetFrameworks>
     <Description>Provides name-based registrations to Microsoft.Extensions.DependencyInjection</Description>
     <Authors>Neleus</Authors>
     <Company>Neleus</Company>
     <Copyright>Neleus</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.1</Version>
     <PackageProjectUrl>https://github.com/yuriy-nelipovich/DependencyInjection.Extensions</PackageProjectUrl>
     <PackageTags>dependencyinjection di</PackageTags>
+    <PackageId>Lolo.DependencyInjection.Extensions</PackageId>
+    <Product>Lolo.DependencyInjection.Extensions</Product>
   </PropertyGroup>
 
   <ItemGroup>
