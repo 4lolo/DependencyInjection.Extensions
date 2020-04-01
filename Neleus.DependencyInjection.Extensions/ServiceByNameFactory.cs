@@ -14,10 +14,23 @@ namespace Neleus.DependencyInjection.Extensions
             _registrations = registrations;
         }
 
+        object IServiceByNameFactory.GetByName(string name)
+        {
+            if (!_registrations.TryGetValue(name, out Type implementationType))
+            {
+                throw new ArgumentException($"Service name '{name}' is not registered");
+            }
+
+            return (TService)_serviceProvider.GetService(implementationType);
+        }
+
         public TService GetByName(string name)
         {
-            if (!_registrations.TryGetValue(name, out var implementationType))
+            if (!_registrations.TryGetValue(name, out Type implementationType))
+            {
                 throw new ArgumentException($"Service name '{name}' is not registered");
+            }
+
             return (TService)_serviceProvider.GetService(implementationType);
         }
     }

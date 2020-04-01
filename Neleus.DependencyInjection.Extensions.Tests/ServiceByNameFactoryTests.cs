@@ -26,12 +26,12 @@ namespace Neleus.DependencyInjection.Extensions.Tests
                 .Add<HashSet<int>>("hashSet")
                 .Build();
 
-            var serviceProvider = _container.BuildServiceProvider();
+            ServiceProvider serviceProvider = _container.BuildServiceProvider();
 
             // direct resolution by calling GetByName
-            var list = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
+            IEnumerable<int> list = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
                 .GetByName("list");
-            var hashSet = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
+            IEnumerable<int> hashSet = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
                 .GetByName("hashSet");
 
             Assert.AreEqual(typeof(List<int>), list.GetType());
@@ -54,10 +54,10 @@ namespace Neleus.DependencyInjection.Extensions.Tests
             _container.AddTransient<ClientA>(s => new ClientA(s.GetServiceByName<IEnumerable<int>>("list")));
             _container.AddTransient<ClientB>(s => new ClientB(s.GetServiceByName<IEnumerable<int>>("hashSet")));
 
-            var serviceProvider = _container.BuildServiceProvider();
+            ServiceProvider serviceProvider = _container.BuildServiceProvider();
 
-            var a = serviceProvider.GetService<ClientA>();
-            var b = serviceProvider.GetService<ClientB>();
+            ClientA a = serviceProvider.GetService<ClientA>();
+            ClientB b = serviceProvider.GetService<ClientB>();
 
             Assert.AreEqual(typeof(List<int>), a.Dependency.GetType());
             Assert.AreEqual(typeof(HashSet<int>), b.Dependency.GetType());
@@ -77,9 +77,9 @@ namespace Neleus.DependencyInjection.Extensions.Tests
             //The named service is resolved by the client itself
             _container.AddTransient<ClientZ>();
 
-            var serviceProvider = _container.BuildServiceProvider();
+            ServiceProvider serviceProvider = _container.BuildServiceProvider();
 
-            var z = serviceProvider.GetService<ClientZ>();
+            ClientZ z = serviceProvider.GetService<ClientZ>();
 
             Assert.AreEqual(typeof(HashSet<int>), z.Dependency.GetType());
         }
@@ -98,12 +98,12 @@ namespace Neleus.DependencyInjection.Extensions.Tests
                 .Add<HashSet<int>>("hashSet")
                 .Build();
 
-            var serviceProvider = _container.BuildServiceProvider();
+            ServiceProvider serviceProvider = _container.BuildServiceProvider();
 
             // direct resolution by calling GetByName
-            var list = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
+            IEnumerable<int> list = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
                 .GetByName("LiSt");
-            var hashSet = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
+            IEnumerable<int> hashSet = serviceProvider.GetService<IServiceByNameFactory<IEnumerable<int>>>()
                 .GetByName("HASHSET");
 
             Assert.AreEqual(typeof(List<int>), list.GetType());

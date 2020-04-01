@@ -28,11 +28,23 @@ namespace Neleus.DependencyInjection.Extensions
         }
 
         /// <summary>
-        /// Synonym of <see cref="GetServiceByName{TService}"/>. It is recommended to use <see cref="GetServiceByName{TService}"/> as a better naming convention.
+        /// Provides instances of named registration. It is intended to be used in factory registrations, see example.
         /// </summary>
-        public static TService GetByName<TService>(this IServiceProvider provider, string name)
+        /// <code>
+        /// _container.AddTransient&lt;ClientA&gt;(s =&gt; new ClientA(s.GetByName&lt;IEnumerable&lt;int&gt;&gt;(&quot;list&quot;)));
+        /// _container.AddTransient&lt;ClientB&gt;(s =&gt; new ClientB(s.GetByName&lt;IEnumerable&lt;int&gt;&gt;(&quot;hashSet&quot;)));
+        /// </code>
+        /// <returns></returns>
+        public static object GetServiceByName(this IServiceProvider provider, Type serviceType, string name)
         {
-            return provider.GetServiceByName<TService>(name);
+            Type factoryType = typeof(IServiceByNameFactory<>).MakeGenericType(serviceType);
+            IServiceByNameFactory factory = (IServiceByNameFactory)provider.GetService(factoryType);
+            if (factory == null)
+            {
+                throw new InvalidOperationException($"The factory {factoryType} is not registered. Please use {nameof(FactoryServiceCollectionExtensions)}.{nameof(AddByName)}() to register names.");
+            }
+
+            return factory.GetByName(name);
         }
 
         /// <summary>
@@ -45,9 +57,12 @@ namespace Neleus.DependencyInjection.Extensions
         /// <returns></returns>
         public static TService GetServiceByName<TService>(this IServiceProvider provider, string name)
         {
-            var factory = provider.GetService<IServiceByNameFactory<TService>>();
+            IServiceByNameFactory<TService> factory = provider.GetService<IServiceByNameFactory<TService>>();
             if (factory == null)
+            {
                 throw new InvalidOperationException($"The factory {typeof(IServiceByNameFactory<TService>)} is not registered. Please use {nameof(FactoryServiceCollectionExtensions)}.{nameof(AddByName)}() to register names.");
+            }
+
 
             return factory.GetByName(name);
         }

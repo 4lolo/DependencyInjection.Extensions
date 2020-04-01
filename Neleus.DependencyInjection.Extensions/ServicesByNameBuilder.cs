@@ -49,7 +49,7 @@ namespace Neleus.DependencyInjection.Extensions
         /// </summary>
         public void Build()
         {
-            var registrations = _registrations;
+            IDictionary<string, Type> registrations = _registrations;
             //Registrations are shared across all instances
             _services.AddTransient<IServiceByNameFactory<TService>>(s => new ServiceByNameFactory<TService>(s, registrations));
         }
